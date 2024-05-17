@@ -11,23 +11,36 @@ user_data = {}
 @bot.message_handler(commands=['start'])
 def start(message: Message):
     chat_id = message.chat.id
-    bot.send_message(chat_id, 'Приветствуем вас в боте нашего учебного центра😊.\n'
-                              'Для того что бы записаться на наш платный мок тест - нажмите на кнопку ниже⬇',
+    bot.send_message(chat_id, 'Приветствуем вас в боте нашего учебного центра😊.',
                      reply_markup=generate_registration())
 
-@bot.message_handler(func=lambda message: 'О насℹ' == message.text)
+@bot.message_handler(func=lambda message: 'Информация о центре' == message.text)
 def info(message: Message):
     chat_id = message.chat.id
-    bot.send_message(chat_id, f'Наш центр находится на Чиланзарском районе г.Ташкент.\n'
-                              f'Ориентир: метро Мирзо Улугбек, театр Оперета\n'
-                              f'Время работы: 9:00-20:00 с понедельника по субботу.\n'
-                             f'Контактные данные: +998-95-227-99-00\n'
-                              f'          +998-97-725-01-99'
-                              )
+    bot.send_message(chat_id, f'''Prestige IELTS Academy находится по адресу: Чиланзарский район, квартал Ц, 48.
+Ориентир: метро «Мирзо Улугбек», театр Оперетты.
+Рабочее время: с понедельника по субботу с 9:00 до 20.00.
+
+Контакты:
+
++998-95-227-99-00
+
++998-97-725-01-99''')
     bot.send_message(chat_id, 'https://maps.app.goo.gl/ENzBnai3BHFMo7PH7')
 
 
-@bot.message_handler(func=lambda message: 'Записаться на платный мок' == message.text)
+@bot.message_handler(func=lambda message: 'Информация о MOCK-Test' == message.text)
+def mock(message: Message):
+    chat_id = message.chat.id
+    msg = bot.send_message(chat_id, f'''• Цена МОСК-Test - 150 000 сум;
+• MOCK-Test включает в себя все аспекты IELTS.
+• В первый день проводятся - Reading, Listening, Writing и во второй день - Speaking;
+• Результаты MOCK-Test Вы получить на второй день после сдачи Speaking!
+
+Для регистрации нажмите на кнопку «Зарегистрироваться на тест»👇''', reply_markup=generate_mock())
+
+
+@bot.message_handler(func=lambda message: 'Зарегистрироваться на тест' == message.text)
 def ask_full_name(message: Message):
     chat_id = message.chat.id
     msg = bot.send_message(chat_id, f'Напишите своё имя и фамилию: ', reply_markup=None)
@@ -41,6 +54,7 @@ def ask_phone_number(message: Message):
     user_data['full_name'] = full_name
     msg = bot.send_message(chat_id, f'Отправьте ваш контакт: ', reply_markup=generate_contact())
     bot.register_next_step_handler(msg, ask_date)
+    bot.send_message(chat_id, 'Нажмите на кнопку для отправки контакта')
 
 def ask_date(message: Message):
     global user_data
@@ -109,6 +123,7 @@ def unsubmit_registration(call: CallbackQuery):
     chat_id = call.message.chat.id
     msg = bot.send_message(chat_id, f'Вы успешно отменили запись!')
     bot.register_next_step_handler(msg, reply_markup=generate_registration())
+
 
 
 bot.polling(none_stop=True)
