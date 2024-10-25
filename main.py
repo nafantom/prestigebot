@@ -32,7 +32,7 @@ def info(message: Message):
 @bot.message_handler(func=lambda message: 'Информация о MOCK-Test' == message.text)
 def mock(message: Message):
     chat_id = message.chat.id
-    msg = bot.send_message(chat_id, f'''• Цена МОСК-Test - 150 000 сум;
+    msg = bot.send_message(chat_id, f'''• Цена МОСК-Test - 180 000 сум;
 • MOCK-Test включает в себя все аспекты IELTS.
 • В первый день проводятся - Reading, Listening, Writing и во второй день - Speaking;
 • Результаты MOCK-Test Вы получить на второй день после сдачи Speaking!
